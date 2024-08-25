@@ -1,0 +1,52 @@
+
+#Main classes used to synthesize user labels into subclasses
+
+1. **Entity**: Entities in manufacturing include types of organizations, individuals, or systems that participate in manufacturing, such as companies, departments, or software systems.
+2. **Operation**: Operations in manufacturing refer to processes or actions, such as machining, assembly, material handling, maintenance, and repairs. These are activities performed to transform materials or maintain equipment.
+3. **Resource**: Resources in manufacturing are physical assets, such as materials, tools, and equipment, used in operations or to support manufacturing processes.
+
+
+
+#Reference
+
+Lemaignan, S., Siadat, A., Dantan, J. Y., & Semenenko, A. (2006, June). MASON: A proposal for an ontology of manufacturing domain. In IEEE Workshop on Distributed Intelligent Systems: Collective Intelligence and Its Applications (DIS'06) (pp. 195-200). IEEE.
+
+
+
+
+#Note 
+
+The sublevels or subclasses between these root level categories are determined using a prompt-based GPT response. Please refer to one version of response that we are providing. Let us know if something is not clear. The following prompt is used to generate the subclasses between major classes. The subclasses can be found in entities.txt
+
+
+
+
+
+# Generate the GPT response
+
+    input_text = f"""
+    You are an AI language model with expertise in the manufacturing domain. I have a list of clusters, each containing several concatenated user labels that represent various tools, equipment, resources, and operations used in manufacturing.
+
+    Please analyze the concatenated user labels in the following cluster and categorize them into specific types such as types of operations, resources (tools, equipment, materials), or entities. Then, map these types to the relevant categories in the following ontology structure:
+
+    1. **Entity**: Entities in manufacturing include types of organizations, individuals, or systems that participate in manufacturing, such as companies, departments, or software systems.
+    2. **Operation**: Operations in manufacturing refer to processes or actions, such as machining, assembly, material handling, maintenance, and repairs. These are activities performed to transform materials or maintain equipment.
+    3. **Resource**: Resources in manufacturing are physical assets, such as materials, tools, and equipment, used in operations or to support manufacturing processes.
+
+    For each label or group of labels, provide the following with clear identifiers:
+    1. **[SPECIFIC_TYPE]**: The specific type that the label(s) belong to. [END_SPECIFIC_TYPE]
+    2. **[ONTOLOGY_MAPPING]**: Its mapping to the relevant ontology category. [END_ONTOLOGY_MAPPING]
+    3. **[RELEVANT_LABELS]**: List the labels that fall into this specific type, separated by commas. [END_RELEVANT_LABELS]
+    
+    Cluster ID: {cluster_id}
+    User Labels:
+    {user_labels}
+    """
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are an expert AI language model in the manufacturing industry, helping to categorize and map manufacturing asset labels to a specific ontology."},
+            {"role": "user", "content": input_text}
+        ],
+        max_tokens=500  # Adjust as needed based on the expected length of responses
+    )
